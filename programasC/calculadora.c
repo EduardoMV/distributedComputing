@@ -27,12 +27,26 @@ int validar_expresion(const char *exp) {
             printf("Error: Falta un operador antes del paréntesis de apertura.\n");
             exit(0);
         }
+
+        if (exp[i - 1] == ')' && exp[i] >= '0' && exp[i - 1] <= '9') {
+            printf("Error: Falta un operador después del paréntesis de cierre.\n");
+            exit(0);
+        }
+
+        if ((exp[i] == '+' || exp[i] == '-' || exp[i] == '*' || exp[i] == '/') &&
+            (exp[i + 1] == '+' || exp[i + 1] == '-' || exp[i + 1] == '*' || exp[i + 1] == '/')) {
+            printf("Error: Múltiples operadores seguidos.\n");
+            exit(0);
+        }
+
     }
 
     if (open_parentheses > 0) {
         printf("Error: Los paréntesis no están balanceados. Falta un paréntesis de cierre.\n");
         exit(0);
     }
+
+
 
     char *div_by_zero = strstr(exp, "/0");
     if (div_by_zero != NULL) {
@@ -42,6 +56,8 @@ int validar_expresion(const char *exp) {
 
     return 1;
 }
+
+
 
 int main(int argc, char *argv[]) {
     //Verifica que se proporcione al menos un argumento
