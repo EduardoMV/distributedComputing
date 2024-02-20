@@ -1,6 +1,5 @@
 /**
  * @Eduardo Ulises Martínez Vaca
- *
  */
 
 #include <Python.h>
@@ -45,36 +44,30 @@ int validar_expresion(const char *exp) {
 }
 
 int main(int argc, char *argv[]) {
-    // Verifica que se proporcione al menos un argumento
+    //Verifica que se proporcione al menos un argumento
     if (argc <= 1) {
         printf("Error: No se proporcionaron argumentos para evaluar.\n");
         return 1;
     }
 
-    //Concatena todos los argumentos en una sola cadena
+    //Concatena los carácteres en un string
     char eval_string[100] = "";
     for (int i = 1; i < argc; i++) {
         strcat(eval_string, argv[i]);
     }
 
-    // Validar la expresión
     if (!validar_expresion(eval_string)) {
         printf("Error: Los paréntesis no están balanceados.\n");
         return 1;
     }
 
-    // Inicializar Python
     Py_Initialize();
-
     // Construir la cadena de evaluación de Python
     char python_eval_string[1000] = "print(eval(\"";
     strcat(python_eval_string, eval_string);
     strcat(python_eval_string, "\"))");
 
-    // Ejecutar la cadena en Python
     PyRun_SimpleString(python_eval_string);
-
-    // Finalizar Python
     Py_Finalize();
 
     return 0;
